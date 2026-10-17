@@ -1,0 +1,16 @@
+[
+  {
+    "id": "demo-android",
+    "platform": "Android",
+    "appVersion": "1.0.2",
+    "locale": "ru",
+    "device": "Android 14"
+  },
+  {
+    "id": "demo-desktop",
+    "platform": "Desktop",
+    "appVersion": "1.0.2",
+    "locale": "ru",
+    "device": "Windows 11"
+  }
+]

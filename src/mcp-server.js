@@ -1,0 +1,12 @@
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { z } from 'zod';
+import { loadUserContext, listTickets, loadTicket } from './store.js';
+const [root,userId]=process.argv.slice(2);
+if (!root || !userId) throw new Error('Context root and authenticated user required');
+const server=new McpServer({name:'support-context',version:'0.1.0'});
+const wrap=fn=>async args=>{try{return {content:[{type:'text',text:JSON.stringify(await fn(args))}]};}catch{return {isError:true,content:[{type:'text',text:'Context not available for this user'}]};}};
+server.registerTool('get_user_context',{description:'Read the authenticated user platform/version; no contact data',inputSchema:{}},wrap(()=>loadUserContext(root,userId)));
+server.registerTool('list_my_tickets',{description:'List only the authenticated user tickets',inputSchema:{}},wrap(()=>listTickets(root,userId)));
+server.registerTool('get_ticket',{description:'Read a ticket owned by the authenticated user',inputSchema:{ticketId:z.string().min(1).max(80)}},wrap(({ticketId})=>loadTicket(root,userId,ticketId)));
+await server.connect(new StdioServerTransport());
