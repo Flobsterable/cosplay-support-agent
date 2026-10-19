@@ -1,0 +1,11 @@
+{$SUPPORT_DOMAIN} {
+    @chat path /v1/sessions /v1/chat
+    handle @chat {
+        reverse_proxy support:8091 {
+            transport http {
+                response_header_timeout 600s
+            }
+        }
+    }
+    respond 404
+}

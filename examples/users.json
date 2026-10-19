@@ -12,5 +12,10 @@
     "appVersion": "1.0.2",
     "locale": "ru",
     "device": "Windows 11"
+  },
+  {
+    "id": "demo-app",
+    "platform": "Android/Desktop (тестовый чат)",
+    "locale": "ru"
   }
 ]

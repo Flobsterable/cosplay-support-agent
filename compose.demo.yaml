@@ -1,0 +1,24 @@
+# Optional HTTPS entrypoint for testing from the Android/Desktop app.
+services:
+  support:
+    environment:
+      SUPPORT_DEMO_ENABLED: "true"
+    volumes:
+      - ./examples:/data:ro
+  gateway:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      SUPPORT_DOMAIN: ${SUPPORT_DOMAIN:?Set SUPPORT_DOMAIN to your DNS hostname}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - support
+volumes:
+  caddy_data:
+  caddy_config:
